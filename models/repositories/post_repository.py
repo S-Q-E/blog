@@ -19,7 +19,9 @@ class PostRepository:
                 query = query.format(
                     id = post.id
                 )
-                connect.execute(query)
+                self.__db.execute(query)
+                data = cursor.fetchall()
+                print(data)
             return True
         except Exception as ex:
             print(ex)
