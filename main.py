@@ -7,7 +7,7 @@ def main():
     db = DBService()
     profile_repo = ProfileRepository(db)
     prof_control = ProfileController(profile_repo)
-    profile = Profile(first_name = "Rikardo", second_name="Izecson", last_name="Silva", age = 35)
+    profile = Profile(id= 2, first_name = "Rikardo", second_name="Izecson", last_name="Silva", age = 35)
     
     if prof_control.show_profile(profile):
         print('Profile created!')

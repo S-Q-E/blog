@@ -20,6 +20,8 @@ class ProfileRepository:
                     id = profile.id
                 )
                 self.__db.execute(query)
+                data = cursor.fetchall()
+                print(data)
 
             return True
         except Exception as ex:
