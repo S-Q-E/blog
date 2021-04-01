@@ -6,16 +6,16 @@ class PostController:
     def __init__(self, post_repo: PostRepository):
         self.__post_repo = post_repo
 
-    def create_post(self, post: Post):
+    def create_post(self, post):
         return self.__post_repo.create_post(post)
 
-    def delete_post(self, post: Post):
+    def delete_post(self, post):
         return self.__post_repo.delete_post(post)
 
-    def show_post(self, post: Post):
+    def show_post(self, post):
         return self.__post_repo.show_post(user)
 
-    def update_post(self, post: Post):
+    def update_post(self, post):
         return self.__post_repo.update_post(user)
 
     

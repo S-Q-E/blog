@@ -6,16 +6,16 @@ class ProfileController:
     def __init__(self, profile_repo: ProfileRepository):
         self.__profile_repo = profile_repo
 
-    def create_profile(self, profile: Profile):
+    def create_profile(self, profile):
         return self.__profile_repo.create_profile(profile)
 
-    def delete_profile(self, profile: Profile):
+    def delete_profile(self, profile):
         return self.delete_profile(profile)
 
-    def show_profile(self, profile: Profile):
+    def show_profile(self, profile):
         self.__profile_repo.show_profile(profile)
 
-    def update_profile(self, profile: Profile):
+    def update_profile(self, profile):
         return self.__profile_repo.update_profile(profile)
 
     

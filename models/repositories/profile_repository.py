@@ -15,7 +15,7 @@ class ProfileRepository:
         """
         try:
             with self.__db.connection.cursor() as cursor:
-                query = "SELECT * FROM profile where id = {id};"
+                query = "SELECT * FROM profile where id = {id}"
                 query = query.format(
                     id = profile.id
                 )
@@ -35,24 +35,25 @@ class ProfileRepository:
         """
         try:
             with self.__db.connection.cursor() as cursor:
-                query = "INSERT INTO profile (first_name, second_name, last_name, age) VALUES ({firstname}, {secondname}, {last_name}, {age});"
+                query = "INSERT INTO profile (first_name, second_name, last_name, age) VALUES ('{firstname}', '{secondname}', '{lastname}', {age})"
                 query = query.format(
                     firstname = profile.first_name,
                     secondname = profile.second_name,
                     lastname = profile.last_name,
                     age = profile.age 
                 )
+
                 self.__db.execute(query)
-                cursor.commit()
+                self.__db.connection.commit()
 
             return True
         except Exception as ex:
-            print(ex)
+            print("Error in profile repo", ex)
             return False
-
+ 
 
         
-    def delete_profile(self, profile):
+    def delete_profile(self, profile: Profile):
         """
         Удаляет профиль из бд.
         :param profile: - Profile
@@ -72,7 +73,7 @@ class ProfileRepository:
             return False
 
 
-    def update_profile(self, profile):
+    def update_profile(self, profile: Profile):
         """
         Обовляет данные профиля в бд.
         :param profile: - Profile
