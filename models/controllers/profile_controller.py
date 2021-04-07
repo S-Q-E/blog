@@ -1,19 +1,17 @@
-from models.repositories import ProfileRepository
-
 class ProfileController:
     __profile_repo = None
 
-    def __init__(self, profile_repo: ProfileRepository):
+    def __init__(self, profile_repo):
         self.__profile_repo = profile_repo
 
     def create_profile(self, profile):
         return self.__profile_repo.create_profile(profile)
 
-    def delete_profile(self, profile):
-        return self.delete_profile(profile)
+    def delete_profile(self, id):
+        return self.__profile_repo.delete_profile(id)
 
-    def show_profile(self, profile):
-        self.__profile_repo.show_profile(profile)
+    def select_profile(self, id):
+        return self.__profile_repo.select_profile(id)
 
     def update_profile(self, profile):
         return self.__profile_repo.update_profile(profile)

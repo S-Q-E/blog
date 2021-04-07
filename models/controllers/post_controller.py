@@ -1,21 +1,21 @@
-from models.repositories import PostRepository
+# from models.repositories import PostRepository
 
 class PostController:
     __post_repo = None
 
-    def __init__(self, post_repo: PostRepository):
+    def __init__(self, post_repo):
         self.__post_repo = post_repo
 
     def create_post(self, post):
         return self.__post_repo.create_post(post)
 
-    def delete_post(self, post):
-        return self.__post_repo.delete_post(post)
+    def delete_post(self, id):
+        return self.__post_repo.delete_post(id)
 
-    def show_post(self, post):
-        return self.__post_repo.show_post(user)
+    def select_post(self, id):
+        return self.__post_repo.select_post(id)
 
     def update_post(self, post):
-        return self.__post_repo.update_post(user)
+        return self.__post_repo.update_post(post)
 
     

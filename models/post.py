@@ -2,7 +2,7 @@ class Post:
     __slots__ = (
         'id', 
         'creation_date', 
-        'updated_at', 
+        'update_date', 
         'user_id', 
         'title', 
         'description'
@@ -14,12 +14,17 @@ class Post:
         title, 
         id = None, 
         creation_date = None, 
-        updated_at = None,
+        update_date = None,
         description = None
     ):
         self.id = id
         self.user_id = user_id
         self.creation_date = creation_date
-        self.updated_at = updated_at
+        self.update_date = update_date
         self.title = title
         self.description = description
+
+
+    @classmethod
+    def from_dict(cls, data):
+        return Post(**data)

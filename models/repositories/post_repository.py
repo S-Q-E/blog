@@ -1,5 +1,6 @@
 from db import DBService
 from models import Post
+from custom_exceptions import RepositoryError
 
 class PostRepository:
     __db = None
@@ -7,25 +8,25 @@ class PostRepository:
     def __init__(self, db: DBService):
         self.__db = db
 
-    def show_post(self, post: Post):
+
+    def select_post(self, id):
         """
-        Показывает посты в бд. 
-        :param post: - Post
-        :return bool: - False - ошибка, True - успех
+        Возвращает объект класса Profile c бд с н ужжным id
+        :param id: - int успешный select (такая запись есть)
+        :return Profile: - False - ошибка, True - успех
+        :return None: - нету такой записи
+        :raise Repository Error: - ошибка в бд
         """
         try:
-            with self.__db.connection.cursor() as cursor:
-                query = "SELECT * FROM post where id = {id};"
-                query = query.format(
-                    id = post.id
-                )
-                self.__db.execute(query)
-                data = cursor.fetchall()
-                print(data)
-            return True
+            query = "SELECT * FROM post where id = %d" % id
+            self.__db.execute(query)
+            if self.__db.cursor.rowcount == 1:
+                return Post.from_dict(self.__db.cursor.fetchone())
+            else:
+                return None
         except Exception as ex:
             print(ex)
-            return False
+            # raise RepositoryError
 
         
     def create_post(self, post: Post):
@@ -35,59 +36,46 @@ class PostRepository:
         :return bool: - False - ошибка, True - успех
         """
         try:
-            with self.__db.connection.cursor() as cursor:
-                query = "INSERT INTO post (user_id, title, description) VALUES ({userid}, '{title}', '{description}')"
-                query = query.format(
-                    userid = post.user_id,
-                    title = post.title,
-                    description = post.description
-                )
-                self.__db.execute(query)
-                self.__db.connection.commit()
-
+            query = "INSERT INTO post (user_id, title, description) VALUES ({userid}, '{title}', '{description}')"
+            query = query.format(
+                userid = post.user_id,
+                title = post.title,
+                description = post.description
+            )
+            self.__db.execute(query)
             return True
         except Exception as ex:
             print(ex)
             return False
         
-    def delete_profile(self, post: Post):
+    def delete_post(self, id):
         """
         Удаляет посты из бд. 
         :param post: - Post
         :return bool: - False - ошибка, True - успех
         """
         try:
-            with self.__db.connection.cursor() as cursor:
-                query = "DELETE FROM post where id = {id};"
-                query = query.format(
-                    id = post.id
-                )
-                self.__db.execute(query)
-                self.__db.connection.commit()
-
-            return True
+            query = "DELETE FROM post where id = %d" % id
+            self.__db.execute(query)
         except Exception as ex:
             print(ex)
-            return False
+            raise RepositoryError
 
 
-    def update_post(self, post):
+    def update_post(self, post: Post):
         """
         Обновляет данные поста в бд. 
         :param post: - Post
         :return bool: - False - ошибка, True - успех
         """
         try:
-            with self.__db.connection.cursor() as cursor:
-                query = "UPDATE post SET `user_id` = {userid}, `title` = '{title}', `description` = '{decrip}';"
-                query = query.format(
-                    userid = post.user_id,
-                    title = post.title,
-                    desrip = post.desription
-                )
-                self.__db.execute(query)
-                self.__db.connection.commit()
-            return True
+            query = "UPDATE post SET user_id = {userid}, title = '{title}', description = '{descrip}'"
+            query = query.format(
+                userid = post.user_id,
+                title = post.title,
+                descrip = post.description
+            )
+            self.__db.execute(query)
         except Exception as ex:
             print(ex)
-            return False
+            
