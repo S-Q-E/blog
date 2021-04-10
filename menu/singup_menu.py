@@ -1,13 +1,14 @@
 from menu.base_menu import BaseMenu
 from menu.main_menu import MainMenu
-from utils import get_option_input, raise_exception
+from utils import *
 from custom_exceptions import UserInputOptionException, ExitFromMenuException
 from models.context import Context
+from models.profile import Profile
+from models.blog_user import User
 
 class SignupMenu(BaseMenu):
     pass
-    __header = "******Please SIGN UP******\nLet's create your profile"
-    __options = "[1] Retry\n [2] Back"
+    __header = "******Please SIGN UP******"
 
     def __init__(self, user_controller, profile_controller, post_controller):
         self.__user_controller = user_controller
@@ -15,21 +16,41 @@ class SignupMenu(BaseMenu):
         self.__post_controller = post_controller
     
 
-        self.__next_menus = {
-            '1': lambda *_: None,
-            '2': lambda *_: raise_exception(ExitFromMenuException)
-        }
         
+
     def show(self):
-        print(self.header)
+        print(self.__header)
+        get_age = get_age_input()
         input_func = get_option_input()
+        input_username_func = get_username_input()
+        input_password_func = get_password_input()
+        
+        def get_age_from_user():
+            return get_age("Enter your age:_")
 
+        def get_username():
+            return input_username_func("Enter username:_ ")
 
-        def get_input():
-            selected_option = input_func('Enter option: ')
-            if selected_option not in self.__next_menus.keys():
-                raise UserInputOptionException
-            return selected_option
+        def get_password():
+            return input_password_func("Enter password:_ ")
 
         while True:
-            pass
+
+            username = self.input_secure_wrap(get_username)
+            password = self.input_secure_wrap(get_password)
+            
+            if self.__user_controller.is_user_exist(username):
+                print(f"User {username} already exist!")
+                continue
+
+            profile_id = self.__profile_controller.create_empty_profile()
+            
+            if profile_id:
+                user = User(username, password, profile_id)
+                self.__user_controller.create_user(user)
+                input(f"User {username} created!\nPress Enter to continue")
+                return
+            else:
+                input('Registration failed! Try again!')
+            
+            

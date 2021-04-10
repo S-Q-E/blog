@@ -4,6 +4,9 @@ class ProfileController:
     def __init__(self, profile_repo):
         self.__profile_repo = profile_repo
 
+    def create_empty_profile(self):
+        return self.__profile_repo.create_empty_profile()
+
     def create_profile(self, profile):
         return self.__profile_repo.create_profile(profile)
 

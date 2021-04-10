@@ -66,6 +66,37 @@ class UserRepository:
             print("user_repsitory exepcion", ex)
     
 
+    def select_user_by_username(self, username):
+        try:
+            query = "SELECT * FROM blog_user where username = '%s'" % username
+            self.__db.execute(query)
+
+            if self.__db.cursor.rowcount > 0:
+                return User.from_dict(self.__db.cursor.fetchone())
+            else:
+                return None
+        except Exception as ex:
+            print(ex)
+            raise 
+        
+    
+    def select_userid_by_username(self, username):
+        try:
+            query = "SELECT id FROM blog_user where username = '%s'" % username
+            self.__db.execute(query)
+
+            if self.__db.cursor.rowcount == 1:
+                return self.__db.cursor.fetchone()['id']
+            else:
+                return None
+        except Exception as ex:
+            print(ex)
+            raise 
+        
+
+
+
+
     def select_user(self, id):
         """
         Возвращает объект класса User с бд с нужным нам id

@@ -18,4 +18,9 @@ class PostController:
     def update_post(self, post):
         return self.__post_repo.update_post(post)
 
+    def select_all_posts(self):
+        return self.__post_repo.select_all_post()
+
+    def select_all_my_posts(self):
+        return self.__post_repo.select_all_my_posts()
     

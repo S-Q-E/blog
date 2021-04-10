@@ -79,3 +79,22 @@ class PostRepository:
         except Exception as ex:
             print(ex)
             
+    def select_all_post(self):
+        try:
+            query = " select blog_user.username, post.creation_date,  post.title, post.description  from post inner join blog_user on post.user_id = blog_user.id order by post.creation_date ASC"
+            self.__db.execute(query)
+
+            return self.__db.cursor.fetchall()
+        except Exception as ex:
+            print(ex)
+            raise RepositoryError
+
+    def select_all_my_posts(self):
+        try:
+            query = " select * from post where True"
+            self.__db.execute(query)
+
+            return self.__db.cursor.fetchall()
+        except Exception as ex:
+            print(ex)
+            raise RepositoryError

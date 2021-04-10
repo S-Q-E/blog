@@ -9,3 +9,18 @@ class ExitFromMenuException(Exception):
 
 class InvalidInputConfirmException(Exception):
     pass
+
+class InvalidUsernameException(Exception):
+    pass
+
+class InvalidPasswordException(Exception):
+    pass
+
+class InvalidNameException(Exception):
+    pass
+
+class InvalidAgeException(Exception):
+    pass
+
+class InvalidIdException(Exception):
+    pass

@@ -6,6 +6,10 @@ class UserController:
     def __init__(self, user_repo):
         self.__user_repo = user_repo
 
+
+    def is_user_exist(self, username):
+        return self.__user_repo.select_user_by_username(username)
+
     def login_user(self, username, password):
         """
         {
@@ -16,8 +20,7 @@ class UserController:
 
         result = {}
 
-        user = self.__user_repo.login_user(username, password)
-        profile = self.__user_repo.login_user(username, password)
+        user, profile = self.__user_repo.login_user(username, password)
         result['status'] = 'failed' if user is None or profile is None else 'success'
         result['user'] = user
         result['profile'] = profile 
@@ -36,4 +39,5 @@ class UserController:
     def select_user(self, id):
         return self.__user_repo.select_user(id)
 
-    
+    def select_userid_by_username(self, username):
+        return self.__user_repo.select_userid_by_username(username)

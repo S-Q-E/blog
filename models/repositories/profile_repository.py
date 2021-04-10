@@ -10,6 +10,28 @@ class ProfileRepository:
 
 
 
+    def create_empty_profile(self):
+        """
+        Создает пустой профиль и возвращает его id
+        """
+
+        try:
+            query = "INSERT INTO profile () VALUES ();"
+            self.__db.execute(query)
+
+            query = "SELECT max(id) as id FROM profile;"
+            self.__db.execute(query)
+
+            if self.__db.cursor.rowcount == 1:
+                return self.__db.cursor.fetchone()['id']
+            else:
+                return None
+                
+        except Exception as ex:
+            print(ex)
+            raise RepositoryError
+
+
     def select_profile(self, id):
         """
         Возвращает объект класса Profile c бд с н ужжным id
@@ -34,7 +56,7 @@ class ProfileRepository:
     
     def create_profile(self, profile: Profile):
         """
-        Добавляет профиль в бд.
+        Добавляет профиль в бд и возвращает его id
         :param profile: - Profile
         :return bool: - False - ошибка, True - успех
         """
@@ -48,10 +70,18 @@ class ProfileRepository:
             )
             
             self.__db.execute(query)
-            return True
+
+            query = "SELECT max(id) AS id FROM profile"
+            self.__db.execute(query)
+
+            if self.__db.cursor.rowcount == 1:
+                return self.__db.cursor.fetchone()['id']
+            else:
+                return None
+
         except Exception as ex:
             print(ex)
-            return False
+            raise RepositoryError
  
 
         
@@ -80,11 +110,11 @@ class ProfileRepository:
         try:
             query = "UPDATE profile SET first_name = '{firstname}', second_name = '{secondname}', last_name = '{lastname}', age = {age} WHERE id = {id}"
             query = query.format(
+                id = profile.id,
                 firstname = profile.first_name,
                 secondname = profile.second_name,
                 lastname = profile.last_name,
-                age = profile.age,
-                id = profile.id
+                age = profile.age if profile.age is not None else 'NULL'
             )
         
             self.__db.execute(query)

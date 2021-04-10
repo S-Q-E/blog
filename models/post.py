@@ -11,7 +11,7 @@ class Post:
     def __init__(
         self, 
         user_id, 
-        title, 
+        title = None,
         id = None, 
         creation_date = None, 
         update_date = None,
