@@ -5,14 +5,16 @@ from menu.mypage_menu import MyPageMenu
 from menu.feed_menu import FeedMenu
 from utils import get_option_input
 from custom_exceptions import ExitFromMenuException
+from menu.deleteuser_menu import DeleteUserMenu
 
 class MainMenu(BaseMenu):
     __header = "*****Main Menu*****"
-    __options = "[1] My Profile\n[2] My posts\n[3] Feed"
+    __options = "[1] My Profile\n[2] My posts\n[3] Feed\n[4] Delete all my data"
     __next_menus = {
         '1': ProfileMenu,
         '2': MyPageMenu,
-        '3': FeedMenu
+        '3': FeedMenu,
+        '4': DeleteUserMenu
     }
 
     def __init__(self, user_controller, profile_controller, post_controller):

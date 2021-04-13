@@ -55,11 +55,31 @@ class PostRepository:
         :return bool: - False - ошибка, True - успех
         """
         try:
-            query = "DELETE FROM post where id = %d" % id
+            query = "DELETE FROM post where id = {id}"
+            query = query.format(id = id)
             self.__db.execute(query)
+            return True
         except Exception as ex:
             print(ex)
+            return False
             raise RepositoryError
+
+
+    def delete_all_user_post(self, user_id):
+        """
+        Удаляет посты из бд. 
+        :param post: - Post
+        :return bool: - False - ошибка, True - успех
+        """
+        try:
+            query = "DELETE FROM post where user_id = %d" % user_id
+            self.__db.execute(query)
+            return True
+        except Exception as ex:
+            print(ex)
+            return False
+            raise RepositoryError
+            
 
 
     def update_post(self, post: Post):
@@ -69,16 +89,20 @@ class PostRepository:
         :return bool: - False - ошибка, True - успех
         """
         try:
-            query = "UPDATE post SET user_id = {userid}, title = '{title}', description = '{descrip}'"
+            query = "UPDATE post SET user_id = {userid}, title = '{title}', description = '{descrip}' WHERE id = {id}"
             query = query.format(
+                id = post.id,
                 userid = post.user_id,
                 title = post.title,
                 descrip = post.description
             )
             self.__db.execute(query)
+            return True
         except Exception as ex:
             print(ex)
-            
+            return False
+
+
     def select_all_post(self):
         try:
             query = " select blog_user.username, post.creation_date,  post.title, post.description  from post inner join blog_user on post.user_id = blog_user.id order by post.creation_date ASC"
@@ -89,9 +113,11 @@ class PostRepository:
             print(ex)
             raise RepositoryError
 
-    def select_all_my_posts(self):
+
+    def select_all_my_posts(self, user_id):
         try:
-            query = " select * from post where True"
+            query = "select * from post where user_id = {id}"
+            query = query.format(id = user_id)
             self.__db.execute(query)
 
             return self.__db.cursor.fetchall()

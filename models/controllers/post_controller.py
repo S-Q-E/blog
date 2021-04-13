@@ -21,6 +21,8 @@ class PostController:
     def select_all_posts(self):
         return self.__post_repo.select_all_post()
 
-    def select_all_my_posts(self):
-        return self.__post_repo.select_all_my_posts()
+    def select_all_my_posts(self, user_id):
+        return self.__post_repo.select_all_my_posts(user_id)
     
+    def delete_all_user_post(self, user_id):
+        return self.__post_repo.delete_all_user_post(user_id)

@@ -1,8 +1,9 @@
 from menu.base_menu import BaseMenu
 from menu.main_menu import MainMenu
-from utils import get_option_input
+from utils import get_option_input, raise_exception
 from db.dbservice import DBService
 from models import Context
+from custom_exceptions import ExitFromMenuException
 class SinginMenu(BaseMenu):
     __header = "*****Please SIGN IN*****\n Enter your username and password"
     __options = "[1] Retry\n [2] Back"
@@ -19,7 +20,7 @@ class SinginMenu(BaseMenu):
         }
         
     def show(self):
-        print(self.header)
+        print(self.__header)
         input_func = get_option_input()
 
 

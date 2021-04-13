@@ -99,8 +99,18 @@ def id_input(string):
 def raise_exception(ex):
     raise ex
 
+
 def confirm_input(string):
     result = input(string)
     if result not in ('y', 'n'):
         raise InvalidInputConfirmException
     return result
+
+
+def get_confirm_input():
+    try:
+        input_function = confirm_input
+    except NameError:
+        input_function = input
+    
+    return input_function

@@ -129,8 +129,10 @@ class UserRepository:
         try:
             query = "DELETE FROM blog_user where id = %d" % id 
             self.__db.execute(query)
+            return True
         except Exception as ex:
             print(ex)
+            return False
             raise RepositoryError
 
 

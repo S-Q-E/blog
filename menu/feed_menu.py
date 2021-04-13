@@ -19,7 +19,7 @@ class FeedMenu(BaseMenu):
         print(self.__header)
         feed = self.__post_controller.select_all_posts()
         for i in feed:
-            print(f"From {i['username']}\nDate: {i['creation_date']}\nTitle: {i['title']}\nDescription: {i['description']})  ")
+            print(f"From {i['username']}\nDate: {i['creation_date']}\nTitle: {i['title']}\nDescription: {i['description']})\n")
         print(self.__options)
         input_func = get_option_input()
 

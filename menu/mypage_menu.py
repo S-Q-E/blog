@@ -18,7 +18,7 @@ class MyPageMenu(BaseMenu):
             '2': self.edit_post,
             '3': self.delete_post,
             '4': self.show_all_my_posts,
-            '5': lambda *_: raise_exception(ExitFromMenuError)
+            '5': lambda *_: raise_exception(ExitFromMenuException)
         }
 
     def create_post(self):
@@ -34,26 +34,60 @@ class MyPageMenu(BaseMenu):
 
     
     def delete_post(self):
-        posts = self.__post_controller.select_all_my_posts()
+        posts = self.__post_controller.select_all_my_posts(self.__context.user.id)
+        ids = []
         for i in posts:
+            ids.append(i['id'])
             print(f"ID: ({i['id']})\nTitle: {i['title']}")
             id_input = get_post_id_fucn()
-            if id_input not in i['id']:
+            def get_id():
+                return id_input("Enter post id: ")
+
+            selected_id = self.input_secure_wrap(get_id)
+
+            if int(selected_id) not in ids:
                 print("Incorrect ID")
+                continue
             else:
-                self.__post_controller.delete_post(id_input)
+                if self.__post_controller.delete_post(selected_id):
+                    input("Post deleted")
+                else:
+                    input("Some error in data base")
         
 
+
     def show_all_my_posts(self):
-        posts = self.__post_controller.select_all_my_posts()
+        posts = self.__post_controller.select_all_my_posts(self.__context.user.id)
         for i in posts:
-            print(f"Date: ({i['creation_date']})\nTitle: {i['title']}\nDescription: {i['description']}")
+            print(f"Date: ({i['creation_date']})\nTitle: {i['title']}\nDescription: {i['description']}\n")
+        
+        
 
         input("Press Enter for back to ")
 
 
     def edit_post(self):
-        pass
+        posts = self.__post_controller.select_all_my_posts(self.__context.user.id)
+        ids = []
+        for i in posts:
+            print(f"ID: ({i['id']})\nTitle: {i['title']}\nDescription: {i['description']}\n")
+            ids.append(i['id'])
+
+        user_input = id_input("Please choose post's id")
+        if int(user_input) not in ids:
+            input("Can't found such id")
+            raise_exception(ExitFromMenuException)
+        else:
+            title = input("Enter new title")
+            description = input("Enter new description")
+
+        user_id = self.__user_controller.select_userid_by_username(self.__context.user.username)
+        new_post = Post(id = int(user_input), user_id = user_id, title= title, description = description)
+
+        if not self.__post_controller.update_post(new_post):
+            input("Some error in DB")
+        else:
+            input("Post edited! Press Enter to continue..")
 
                 
     def show(self):
